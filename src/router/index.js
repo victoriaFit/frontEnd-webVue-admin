@@ -1,7 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
-import CategoriaView from '../views/CategoriaView.vue';
-import AutorView from '../views/AutorView.vue';
+import CarrinhoView from '../views/CarrinhoView.vue';
+import EnderecoView from '../views/EnderecoView.vue';
+import ProdutoView from '../views/ProdutoView.vue';
+import UsuarioView from '../views/UsuarioView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -12,14 +14,24 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: '/categorias',
-      name: 'categorias',
-      component: CategoriaView,
+      path: '/carrinhos',
+      name: 'carrinhos',
+      component: CarrinhoView,
     },
     {
-      path: '/autores',
-      name: 'autores',
-      component: AutorView,
+      path: '/enderecos',
+      name: 'enderecos',
+      component: EnderecoView,
+    },
+    {
+      path: '/produtos',
+      name: 'produtos',
+      component: ProdutoView,
+    },
+    {
+      path: '/usuarios',
+      name: 'usuarios',
+      component: UsuarioView,
     },
   ],
 });

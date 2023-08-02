@@ -4,7 +4,7 @@ export default class UsuarioApi {
     const { data } = await axios.get('/usuario/');
     return data;
   }
-  async adicionarUsuarios(usuario) {
+  async adicionarUsuario(usuario) {
     const { data } = await axios.post('/usuario/', usuario);
     return data;
   }

@@ -4,7 +4,7 @@ export default class ProdutoApi {
     const { data } = await axios.get('/produto/');
     return data;
   }
-  async adicionarProdutos(produto) {
+  async adicionarProduto(produto) {
     const { data } = await axios.post('/produto/', produto);
     return data;
   }

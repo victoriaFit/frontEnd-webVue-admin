@@ -25,7 +25,7 @@ export default {
       Object.assign(this.usuario, usuario);
     },
     async excluir(usuario) {
-      await usuariosApi.excluirusuario(usuario.id);
+      await usuariosApi.excluirUsuario(usuario.id);
       this.usuarios = await usuariosApi.buscarTodasOsUsuarios();
     },
   },
@@ -41,6 +41,7 @@ export default {
     <input type="text" v-model="usuario.telefone" placeholder="Telefone" />
     <input type="text" v-model="usuario.senha" placeholder="Senha" />
     <input type="text" v-model="usuario.endereco" placeholder="Endereco" />
+    <select name="" id=""></select>
     <button @click="salvar">Salvar</button>
   </div>
   <hr />

@@ -4,7 +4,7 @@ export default class CarrinhosApi {
     const { data } = await axios.get('/carrinho/');
     return data;
   }
-  async adicionarCarrinhos(carrinho) {
+  async adicionarCarrinho(carrinho) {
     const { data } = await axios.post('/carrinho/', carrinho);
     return data;
   }

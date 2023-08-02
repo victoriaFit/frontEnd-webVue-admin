@@ -25,7 +25,7 @@ export default {
       Object.assign(this.produto, produto);
     },
     async excluir(produto) {
-      await produtosApi.excluirproduto(produto.id);
+      await produtosApi.excluirProduto(produto.id);
       this.produtos = await produtosApi.buscarTodasOsProdutos();
     },
   },

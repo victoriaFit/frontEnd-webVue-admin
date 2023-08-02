@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 export default class EnderecosApi {
   async buscarTodasOsEnderecos() {
-    const { data } = await axios.get('/endereco/');
+    const { data } = await axios.get("/endereco/");
     return data;
   }
-  async adicionarEnderecos(endereco) {
-    const { data } = await axios.post('/endereco/', endereco);
+  async adicionarEndereco(endereco) {
+    const { data } = await axios.post("/endereco/", endereco);
     return data;
   }
   async atualizarEndereco(endereco) {

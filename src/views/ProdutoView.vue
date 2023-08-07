@@ -9,7 +9,7 @@ export default {
     };
   },
   async created() {
-    this.produtos = await produtosApi.buscarTodasOsProdutos();
+    this.produtos = await produtosApi.buscarTodosOsProdutos();
   },
   methods: {
     async salvar() {
@@ -19,14 +19,14 @@ export default {
         await produtosApi.adicionarProduto(this.produto);
       }
       this.produto = {};
-      this.produtos = await produtosApi.buscarTodasOsProdutos();
+      this.produtos = await produtosApi.buscarTodosOsProdutos();
     },
     editar(produto) {
       Object.assign(this.produto, produto);
     },
     async excluir(produto) {
       await produtosApi.excluirProduto(produto.id);
-      this.produtos = await produtosApi.buscarTodasOsProdutos();
+      this.produtos = await produtosApi.buscarTodosOsProdutos();
     },
   },
 };

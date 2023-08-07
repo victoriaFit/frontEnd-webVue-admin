@@ -1,6 +1,6 @@
 import axios from 'axios';
 export default class CarrinhosApi {
-  async buscarTodasOsCarrinhos() {
+  async buscarTodosOsCarrinhos() {
     const { data } = await axios.get('/carrinho/');
     return data;
   }

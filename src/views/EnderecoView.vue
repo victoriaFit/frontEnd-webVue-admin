@@ -9,7 +9,7 @@ export default {
     };
   },
   async created() {
-    this.enderecos = await enderecosApi.buscarTodasOsEnderecos();
+    this.enderecos = await enderecosApi.buscarTodosOsEnderecos();
   },
   methods: {
     async salvar() {
@@ -19,14 +19,14 @@ export default {
         await enderecosApi.adicionarEndereco(this.endereco);
       }
       this.endereco = {};
-      this.enderecos = await enderecosApi.buscarTodasOsEnderecos();
+      this.enderecos = await enderecosApi.buscarTodosOsEnderecos();
     },
     editar(endereco) {
       Object.assign(this.endereco, endereco);
     },
     async excluir(endereco) {
       await enderecosApi.excluirEndereco(endereco.id);
-      this.enderecos = await enderecosApi.buscarTodasOsEnderecos();
+      this.enderecos = await enderecosApi.buscarTodosOsEnderecos();
     },
   },
 };

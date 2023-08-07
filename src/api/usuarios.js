@@ -1,6 +1,6 @@
 import axios from 'axios';
 export default class UsuarioApi {
-  async buscarTodasOsUsuarios() {
+  async buscarTodosOsUsuarios() {
     const { data } = await axios.get('/usuario/');
     return data;
   }

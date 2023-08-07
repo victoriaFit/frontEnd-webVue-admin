@@ -1,6 +1,6 @@
 import axios from "axios";
 export default class EnderecosApi {
-  async buscarTodasOsEnderecos() {
+  async buscarTodosOsEnderecos() {
     const { data } = await axios.get("/endereco/");
     return data;
   }

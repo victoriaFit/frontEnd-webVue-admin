@@ -14,7 +14,7 @@ export default {
     };
   },
   async created() {
-    this.usuarios = await usuariosApi.buscarTodasOsUsuarios();
+    this.usuarios = await usuariosApi.buscarTodosOsUsuarios();
     this.enderecos = await enderecosApi.buscarTodosOsEnderecos();
   },
   methods: {
@@ -25,14 +25,14 @@ export default {
         await usuariosApi.adicionarUsuario(this.usuario);
       }
       this.usuario = {};
-      this.usuarios = await usuariosApi.buscarTodasOsUsuarios();
+      this.usuarios = await usuariosApi.buscarTodosOsUsuarios();
     },
     editar(usuario) {
       Object.assign(this.usuario, usuario);
     },
     async excluir(usuario) {
       await usuariosApi.excluirUsuario(usuario.id);
-      this.usuarios = await usuariosApi.buscarTodasOsUsuarios();
+      this.usuarios = await usuariosApi.buscarTodosOsUsuarios();
     },
   },
 };
@@ -50,7 +50,7 @@ export default {
     <select v-model="usuario.endereco_padrao">
       <option value="">Selecione um endereço</option>
       <option v-for="endereco of enderecos" :key="endereco.id" :value="endereco.id">
-        {{ endereco.id }}
+        {{ endereco.cep }}
       </option>
     </select>
     <button @click="salvar">Salvar</button>

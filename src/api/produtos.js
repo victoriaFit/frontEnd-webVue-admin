@@ -1,6 +1,6 @@
 import axios from 'axios';
 export default class ProdutoApi {
-  async buscarTodasOsProdutos() {
+  async buscarTodosOsProdutos() {
     const { data } = await axios.get('/produto/');
     return data;
   }

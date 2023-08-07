@@ -1,15 +1,21 @@
 <script>
 import UsuariosApi from "@/api/usuarios";
 const usuariosApi = new UsuariosApi();
+import EnderecosApi from "@/api/enderecos";
+const enderecosApi = new EnderecosApi();
+
 export default {
   data() {
     return {
       usuarios: [],
       usuario: {},
+      enderecos: [],
+      endereco: {},
     };
   },
   async created() {
     this.usuarios = await usuariosApi.buscarTodasOsUsuarios();
+    this.enderecos = await enderecosApi.buscarTodosOsEnderecos();
   },
   methods: {
     async salvar() {
@@ -40,17 +46,30 @@ export default {
     <input type="text" v-model="usuario.email" placeholder="Email" />
     <input type="text" v-model="usuario.telefone" placeholder="Telefone" />
     <input type="text" v-model="usuario.senha" placeholder="Senha" />
-    <input type="text" v-model="usuario.endereco" placeholder="Endereco" />
-    <select name="" id=""></select>
+    <input type="text" v-model="usuario.endereco_padrao" placeholder="Endereco" />
+    <select v-model="usuario.endereco_padrao">
+      <option value="">Selecione um endereço</option>
+      <option v-for="endereco of enderecos" :key="endereco.id" :value="endereco.id">
+        {{ endereco.id }}
+      </option>
+    </select>
     <button @click="salvar">Salvar</button>
   </div>
   <hr />
   <ul>
     <li v-for="usuario in usuarios" :key="usuario.id">
       <span @click="editar(usuario)">
-        ({{ usuario.id }}) - {{ usuario.numero }} - {{ usuario.complemento }} - {{ usuario.rua }} - {{ usuario.bairro }} - {{ usuario.cidade }} - {{ usuario.cep }}
-      </span>
+        ({{ usuario.id }}) - {{ usuario.nome }} - {{ usuario.email }} - {{ usuario.telefone }} - {{ usuario.endereco_padrao }} </span>
       <button @click="excluir(usuario)">X</button>
+    </li>
+    
+  </ul>
+  <ul>
+    <li v-for="endereco in enderecos" :key="endereco.id">
+      <span >
+        ({{ endereco.id }}) - {{ endereco.numero }} - {{ endereco.complemento }} - {{ endereco.rua }} - {{ endereco.bairro }} - {{ endereco.cidade }} - {{ endereco.cep }}
+      </span>
+      <button @click="excluir(endereco)">X</button>
     </li>
   </ul>
 </template>

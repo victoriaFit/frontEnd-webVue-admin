@@ -39,7 +39,7 @@ export default {
 </script>
 
 <template>
-  <h1>usuario</h1>
+  <h1>Usuário</h1>
   <hr />
   <div class="form">
     <input type="text" v-model="usuario.nome" placeholder="Nome" />
@@ -59,18 +59,25 @@ export default {
   <ul>
     <li v-for="usuario in usuarios" :key="usuario.id">
       <span @click="editar(usuario)">
-        ({{ usuario.id }}) - {{ usuario.nome }} - {{ usuario.email }} - {{ usuario.telefone }} - {{ usuario.endereco_padrao }} </span>
-      <button @click="excluir(usuario)">X</button>
+        <li>
+          Id: {{ usuario.id }} 
+        </li>
+        <li>
+          Nome: {{ usuario.nome }} 
+        </li>
+        <li>
+          Email: {{ usuario.email }} <button @click="excluir(usuario)">X</button>
+        </li>
+        <li>  
+          Telefone: {{ usuario.telefone }} 
+        </li>
+        <li>
+          Cep: {{ usuario.endereco_padrao }} 
+        </li>
+      </span>
+      <hr>
     </li>
     
-  </ul>
-  <ul>
-    <li v-for="endereco in enderecos" :key="endereco.id">
-      <span >
-        ({{ endereco.id }}) - {{ endereco.numero }} - {{ endereco.complemento }} - {{ endereco.rua }} - {{ endereco.bairro }} - {{ endereco.cidade }} - {{ endereco.cep }}
-      </span>
-      <button @click="excluir(endereco)">X</button>
-    </li>
   </ul>
 </template>
 

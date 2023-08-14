@@ -45,11 +45,30 @@ export default {
   <ul>
     <li v-for="produto in produtos" :key="produto.id">
       <span @click="editar(produto)">
-        ({{ produto.id }}) - {{ produto.nome }} - {{ produto.descricao }} - {{ produto.preco }}
+        <li>
+          ID: {{ produto.id }} 
+        </li>
+        <li>
+          {{ produto.nome }} 
+        </li>
+        <li>
+          {{ produto.descricao }} 
+        </li>
+        <li>
+          R$ {{ produto.preco }}
+        </li>
+        <li>
+          <img :src=(produto.imagem.file) alt="">
+        </li>
+        
       </span>
       <button @click="excluir(produto)">X</button>
     </li>
   </ul>
 </template>
 
-<style></style>
+<style>
+  img{
+    max-width: 100px;
+  }
+</style>

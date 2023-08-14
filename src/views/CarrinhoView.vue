@@ -1,10 +1,17 @@
 <script>
+
 import CarrinhosApi from "@/api/carrinhos";
 const carrinhosApi = new CarrinhosApi();
+
 import UsuariosApi from "@/api/usuarios";
 const usuariosApi = new UsuariosApi();
+
 import ProdutosApi from "@/api/produtos";
 const produtosApi = new ProdutosApi();
+
+import EnderecosApi from "@/api/enderecos";
+const enderecosApi = new EnderecosApi();
+
 export default {
   data() {
     return {
@@ -14,12 +21,15 @@ export default {
       usuario: {},
       produtos: [],
       produto: {},
+      enderecos: [],
+      endereco: {},
     };
   },
   async created() {
     this.carrinhos = await carrinhosApi.buscarTodosOsCarrinhos();
     this.usuarios = await usuariosApi.buscarTodosOsUsuarios();
     this.produtos = await produtosApi.buscarTodosOsProdutos();
+    this.enderecos = await enderecosApi.buscarTodosOsEnderecos();
   },
   methods: {
     async salvar() {
@@ -46,12 +56,6 @@ export default {
   <h1>carrinho</h1>
   <hr />
   <div class="form">
-    <input type="text" v-model="carrinho.numero" placeholder="Número" />
-    <input type="text" v-model="carrinho.complemento" placeholder="Complemento" />
-    <input type="text" v-model="carrinho.rua" placeholder="Rua" />
-    <input type="text" v-model="carrinho.bairro" placeholder="Bairro" />
-    <input type="text" v-model="carrinho.cidade" placeholder="Cidade" />
-    <input type="text" v-model="carrinho.cep" placeholder="Cep" />
     <select v-model="carrinho.usuario">
       <option value="">Selecione um usuario</option>
       <option v-for="usuario of usuarios" :key="usuario.id" :value="usuario.id">
@@ -62,6 +66,12 @@ export default {
       <option value="">Selecione um produto</option>
       <option v-for="produto of produtos" :key="produto.id" :value="produto.id">
         {{ produto.nome }}
+      </option>
+    </select>
+    <select v-model="carrinho.endereco">
+      <option value="">Selecione um endereco</option>
+      <option v-for="endereco of enderecos" :key="endereco.id" :value="endereco.id">
+        {{ endereco.cep }}
       </option>
     </select>
     <button @click="salvar">Salvar</button>

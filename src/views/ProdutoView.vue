@@ -39,28 +39,24 @@ export default {
     <input type="text" v-model="produto.nome" placeholder="Nome" />
     <input type="text" v-model="produto.descricao" placeholder="Descricão" />
     <input type="text" v-model="produto.preco" placeholder="Preço" />
+    <input type="file" v-bind="produto.imagem" placeholder="Imagem" />
     <button @click="salvar">Salvar</button>
   </div>
   <hr />
   <ul>
     <li v-for="produto in produtos" :key="produto.id">
       <span @click="editar(produto)">
+        <li>ID: {{ produto.id }}</li>
         <li>
-          ID: {{ produto.id }} 
+          {{ produto.nome }}
         </li>
         <li>
-          {{ produto.nome }} 
+          {{ produto.descricao }}
         </li>
+        <li>R$ {{ produto.preco }}</li>
         <li>
-          {{ produto.descricao }} 
+          <img :src="produto.imagem" alt="" />
         </li>
-        <li>
-          R$ {{ produto.preco }}
-        </li>
-        <li>
-          <img :src=(produto.imagem.file) alt="">
-        </li>
-        
       </span>
       <button @click="excluir(produto)">X</button>
     </li>
@@ -68,7 +64,7 @@ export default {
 </template>
 
 <style>
-  img{
-    max-width: 100px;
-  }
+img {
+  max-width: 100px;
+}
 </style>

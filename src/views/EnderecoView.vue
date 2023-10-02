@@ -38,9 +38,6 @@ export default {
   <div class="form">
     <input type="text" v-model="endereco.numero" placeholder="Número" />
     <input type="text" v-model="endereco.complemento" placeholder="Complemento" />
-    <input type="text" v-model="endereco.rua" placeholder="Rua" />
-    <input type="text" v-model="endereco.bairro" placeholder="Bairro" />
-    <input type="text" v-model="endereco.cidade" placeholder="Cidade" />
     <input type="text" v-model="endereco.cep" placeholder="Cep" />
     <button @click="salvar">Salvar</button>
   </div>
@@ -48,7 +45,18 @@ export default {
   <ul>
     <li v-for="endereco in enderecos" :key="endereco.id">
       <span @click="editar(endereco)">
-        ({{ endereco.id }}) - {{ endereco.numero }} - {{ endereco.complemento }} - {{ endereco.rua }} - {{ endereco.bairro }} - {{ endereco.cidade }} - {{ endereco.cep }}
+        <li>
+         ID: {{ endereco.id }} 
+        </li>
+        <li>
+          Número: {{ endereco.numero }}
+        </li>
+        <li>
+          Complemento: {{ endereco.complemento }}
+        </li>
+        <li>
+          Cep: {{ endereco.cep }}
+        </li>
       </span>
       <button @click="excluir(endereco)">X</button>
     </li>

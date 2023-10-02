@@ -1,15 +1,14 @@
 <script>
-import ProdutosApi from "@/api/produtos";
-import CategoriasApi from "@/api/categorias";
-// import imageService from "@/services/imagem.js";
+import {ref} from 'vue';
+import ProdutosApi from "@/api/produtos.js";
+import CategoriasApi from "@/api/categorias.js";
+import imageService from "@/api/imagem.js";
 
 const produtosApi = new ProdutosApi();
 const categoriasApi = new CategoriasApi();
 
-// function onFileChange(e) {
-//   file.value = e.target.files[0]
-//   coverUrl.value = URL.createObjectURL(file.value)
-// }
+const coverUrl = ref('')
+const file = ref(null)
 
 export default {
   data() {
@@ -18,6 +17,8 @@ export default {
       produto: {},
       categorias: [],
       categoria: {},
+      // coverUrl: '',
+      // file: null,
     };
   },
   async created() {
@@ -31,17 +32,17 @@ export default {
         await produtosApi.atualizarProduto(this.produto);
       } else {
 
-        // const imagem = await imageService.uploadImage(file.value)
+        const imagem = await imageService.uploadImage(file.value)
 
         await produtosApi.adicionarProduto(this.produto);
       }
       this.produto = {};
       this.produtos = await produtosApi.buscarTodosOsProdutos();
     },
-    // onFileChange(e) {
-    //   file.value = e.target.files[0]
-    //   coverUrl.value = URL.createObjectURL(file.value)
-    // },
+    onFileChange(e) {
+      file.value = e.target.files[0]
+      coverUrl.value = URL.createObjectURL(file.value)
+    },
     editar(produto) {
       Object.assign(this.produto, produto);
     },
@@ -62,12 +63,13 @@ export default {
     <input type="text" v-model="produto.descricao" placeholder="Descricão" />
     <input type="text" v-model="produto.preco" placeholder="Preço" />
     <select v-model="produto.categoria">
-            <option disabled value="">Selecione uma categoria</option>
-            <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
-              {{ categoria.descricao }}
-            </option>
-          </select>
-    <!-- <input type="file" @change="onFileChange" /> -->
+      <option disabled value="">Selecione uma categoria</option>
+      <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
+        {{ categoria.descricao }}
+      </option>
+    </select>
+    <input type="file" @change="onFileChange" />
+
     <button @click="salvar">Salvar</button>
   </div>
   <hr />
@@ -84,7 +86,7 @@ export default {
     <li>R$ {{ produto.preco }}</li>
     <li>{{ produto.categoria }}</li>
     <li>
-      <img :src="produto.imagem" alt="" />
+      <img :src="produto.imagem.file" alt="" />
     </li>
     </span>
     <button @click="excluir(produto)">X</button>

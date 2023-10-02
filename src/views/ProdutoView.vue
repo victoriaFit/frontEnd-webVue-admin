@@ -1,58 +1,103 @@
 <script>
-import {ref} from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+import ProdutoList from "@/components/ProdutoList";
+
 import ProdutosApi from "@/api/produtos.js";
 import CategoriasApi from "@/api/categorias.js";
 import imageService from "@/api/imagem.js";
+import ProdutoList from '../components/ProdutoList.vue';
 
-const produtosApi = new ProdutosApi();
-const categoriasApi = new CategoriasApi();
+// const produtosApi = new ProdutosApi();
+// const categoriasApi = new CategoriasApi();
 
-const coverUrl = ref('')
+const imageUrl = ref('')
 const file = ref(null)
+const produtoAtual = reactive({
+  nome: '',
+  descricao: '',
+  preco: '',
+  categoria: '',
+})
 
-export default {
-  data() {
-    return {
-      produtos: [],
-      produto: {},
-      categorias: [],
-      categoria: {},
-      // coverUrl: '',
-      // file: null,
-    };
-  },
-  async created() {
-    this.produtos = await produtosApi.buscarTodosOsProdutos();
-    this.categorias = await categoriasApi.buscarTodasAsCategorias();
-  },
+function onFileChange(e) {
+  file.value = e.target.files[0]
+  imageUrl.value = URL.createObjectURL(file.value)
+}
 
-  methods: {
-    async salvar() {
-      if (this.produto.id) {
-        await produtosApi.atualizarProduto(this.produto);
-      } else {
+async function salvar() {
+  const imagem = await imageService.uploadImage(file.value)
+        produtoAtual.cover_attachment_key = imagem.attachment_key
+        await ProdutosApi.adicionarProduto(produtoAtual)
+        Object.assign(produtoAtual, {
+          id: '',
+          nome: '',
+          descricao: '',
+          preco: '',
+          categoria: '',
+          cover_attachment_key: ''
+        })
+        // showForm.value = false
+}
 
-        const imagem = await imageService.uploadImage(file.value)
+onMounted(async () => {
+  const data = await categoriaApi.buscarTodasAsCategorias()
+  categorias.value = data
+})
 
-        await produtosApi.adicionarProduto(this.produto);
-      }
-      this.produto = {};
-      this.produtos = await produtosApi.buscarTodosOsProdutos();
-    },
-    onFileChange(e) {
-      file.value = e.target.files[0]
-      coverUrl.value = URL.createObjectURL(file.value)
-    },
-    editar(produto) {
-      Object.assign(this.produto, produto);
-    },
-    async excluir(produto) {
-      await produtosApi.excluirProduto(produto.id);
-      this.produtos = await produtosApi.buscarTodosOsProdutos();
-    },
+// export default {
+//   data() {
+//     return {
+//       produtos: [],
+//       produto: {},
+//       categorias: [],
+//       categoria: {},
+//       // coverUrl: '',
+//       // file: null,
+//     };
+//   },
+//   async created() {
+//     this.produtos = await produtosApi.buscarTodosOsProdutos();
+//     this.categorias = await categoriasApi.buscarTodasAsCategorias();
+//   },
 
-  },
-};
+//   methods: {
+//     async salvar() {
+//       if (this.produto.id) {
+//         await produtosApi.atualizarProduto(this.produto);
+//       } else {
+
+//         const imagem = await imageService.uploadImage(file.value)
+//         produtoAtual.cover_attachment_key = image.attachment_key
+//         await produtosApi.adicionarProduto(produtoAtual)
+//         Object.assign(produtoAtual, {
+//           id: '',
+//           nome: '',
+//           descricao: '',
+//           preco: '',
+//           categoria: '',
+//           cover_attachment_key: ''
+//         })
+//         showForm.value = false
+
+//         // await produtosApi.adicionarProduto(this.produto);
+//       }
+//       this.produto = {};
+//       this.produtos = await produtosApi.buscarTodosOsProdutos();
+//     },
+//     onFileChange(e) {
+//       file.value = e.target.files[0]
+//       coverUrl.value = URL.createObjectURL(file.value)
+//     },
+//     editar(produto) {
+//       Object.assign(this.produto, produto);
+//     },
+//     async excluir(produto) {
+//       await produtosApi.excluirProduto(produto.id);
+//       this.produtos = await produtosApi.buscarTodosOsProdutos();
+//     },
+
+//   },
+// };
 </script>
 
 <template>
@@ -69,6 +114,7 @@ export default {
       </option>
     </select>
     <input type="file" @change="onFileChange" />
+    <img v-if="coverUrl" :src="coverUrl"/>
 
     <button @click="salvar">Salvar</button>
   </div>
@@ -92,6 +138,7 @@ export default {
     <button @click="excluir(produto)">X</button>
     </li>
   </ul>
+  <ProdutoList />
 </template>
 
 <style>

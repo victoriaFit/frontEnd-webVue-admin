@@ -1,6 +1,5 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import StarIcon from 'vue-material-design-icons/Star.vue'
 
 import produtosApi from '@/api/produtos'
 
@@ -19,11 +18,7 @@ onMounted(async () => {
       <div class="produto-detail">
         <h3>{{ produto.nome }}</h3>
         <div class="produto-year-rating">
-          <p>{{ produto.year }}</p>
-          <div class="rating">
-            <!-- <StarIcon v-for="n in produto.rating" :key="n" fillColor="orange" size="18" /> -->
-            <!-- <StarIcon v-for="n in 5 - produto.rating" :key="n" fillColor="gray" size="18" /> -->
-          </div>
+          <p>{{ produto.preco }}</p>
         </div>
         <p>{{ produto.categoria }}</p>
       </div>

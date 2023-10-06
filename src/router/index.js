@@ -4,6 +4,7 @@ import CarrinhoView from '../views/CarrinhoView.vue';
 import EnderecoView from '../views/EnderecoView.vue';
 import ProdutoView from '../views/ProdutoView.vue';
 import UsuarioView from '../views/UsuarioView.vue';
+import CategoriaView from '../views/CategoriaView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,6 +34,11 @@ const router = createRouter({
       name: 'usuarios',
       component: UsuarioView,
     },
+    {
+      path: '/categorias',
+      name: 'categorias',
+      component: CategoriaView,
+    }
   ],
 });
 

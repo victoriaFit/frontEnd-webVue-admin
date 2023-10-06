@@ -1,19 +1,23 @@
-import axios from "axios";
-export default class CategoriasApi {
-    async buscarTodasAsCategorias() {
-        const { data } = await axios.get("/categoria/");
-        return data;
+import api from '../plugins/api'
+
+class CategoriaApi {
+
+  async buscarTodasAsCategorias() {
+    const response = await api.get('/categoria/')
+    return response.data
+  }
+  async adicionarCategoria(categoria) {
+    let response
+    if (categoria.id){
+      response = await api.put(`/categoria/${categoria.id}/`, genre)
+    } else {
+      response = await api.post('/categoria/', categoria)
     }
-    async adicionarCategoria(categoria) {
-        const { data } = await axios.post("/categoria/", categoria);
-        return data;
-    }
-    async atualizarCategoria(categoria) {
-        const { data } = await axios.put(`/categoria/${categoria.id}/`, categoria);
-        return data;
-    }
-    async excluirCategoria(id) {
-        const { data } = await axios.delete(`/categoria/${id}/`);
-        return data;
-    }
+  }
+  async excluirCategoria(categoria) {
+    const response = await api.delete(`/categoria/${categoria.id}/`);
+    return response.data;
+  }
 }
+
+export default new CategoriaApi()

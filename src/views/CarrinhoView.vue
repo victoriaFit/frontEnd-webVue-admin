@@ -6,8 +6,8 @@ const carrinhosApi = new CarrinhosApi();
 import UsuariosApi from "@/api/usuarios";
 const usuariosApi = new UsuariosApi();
 
-import ProdutosApi from "@/api/produtos";
-const produtosApi = new ProdutosApi();
+import produtosApi from "@/api/produtos";
+// const produtosApi = new ProdutosApi();
 
 import EnderecosApi from "@/api/enderecos";
 const enderecosApi = new EnderecosApi();

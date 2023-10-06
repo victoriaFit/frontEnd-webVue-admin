@@ -1,15 +1,16 @@
-<script>
+<script setup>
 import { ref, reactive, onMounted } from 'vue';
-import ProdutoList from "@/components/ProdutoList";
 
-import ProdutosApi from "@/api/produtos.js";
-import CategoriasApi from "@/api/categorias.js";
-import imageService from "@/api/imagem.js";
 import ProdutoList from '../components/ProdutoList.vue';
 
-// const produtosApi = new ProdutosApi();
-// const categoriasApi = new CategoriasApi();
+import ProdutosApi from "@/api/produtos.js";
+import CategoriaApi from "@/api/categorias.js";
+import imageService from "@/api/imagem.js";
 
+// const produtosApi = new ProdutosApi();
+// const categoriaApi = new CategoriasApi();
+
+const categorias = ref([])
 const imageUrl = ref('')
 const file = ref(null)
 const produtoAtual = reactive({
@@ -40,7 +41,7 @@ async function salvar() {
 }
 
 onMounted(async () => {
-  const data = await categoriaApi.buscarTodasAsCategorias()
+  const data = await CategoriaApi.buscarTodasAsCategorias()
   categorias.value = data
 })
 
@@ -104,10 +105,10 @@ onMounted(async () => {
   <h1>produto</h1>
   <hr />
   <div class="form">
-    <input type="text" v-model="produto.nome" placeholder="Nome" />
-    <input type="text" v-model="produto.descricao" placeholder="Descricão" />
-    <input type="text" v-model="produto.preco" placeholder="Preço" />
-    <select v-model="produto.categoria">
+    <input type="text" v-model="produtoAtual.nome" placeholder="Nome" />
+    <input type="text" v-model="produtoAtual.descricao" placeholder="Descricão" />
+    <input type="text" v-model="produtoAtual.preco" placeholder="Preço" />
+    <select v-model="produtoAtual.categoria">
       <option disabled value="">Selecione uma categoria</option>
       <option v-for="categoria in categorias" :key="categoria.id" :value="categoria.id">
         {{ categoria.descricao }}

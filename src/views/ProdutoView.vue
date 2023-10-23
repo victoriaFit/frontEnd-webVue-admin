@@ -8,14 +8,14 @@ import ProdutosApi from "@/api/produtos.js";
 import CategoriaApi from "@/api/categorias.js";
 import imageService from "@/api/imagem.js";
 
-const categoria = ref([])
+const categorias = ref([])
 const coverUrl = ref('')
 const file = ref(null)
 const produtoAtual = reactive({
   nome: '',
   descricao: '',
-  preco: 0,
   categoria: '',
+  preco: 0,
 })
 
 function onFileChange(e) {
@@ -40,7 +40,7 @@ async function salvar() {
 
 onMounted(async () => {
   const data = await CategoriaApi.buscarTodasAsCategorias()
-  categoria.value = data
+  categorias.value = data
 })
 
 const showForm = ref(false)

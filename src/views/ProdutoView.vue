@@ -13,7 +13,7 @@ const coverUrl = ref('')
 const file = ref(null)
 const produtoAtual = reactive({
   nome: '',
-  descricao: '',
+  // descricao: '',
   categoria: '',
   preco: 0,
 })
@@ -30,7 +30,7 @@ async function salvar() {
   Object.assign(produtoAtual, {
     id: '',
     nome: '',
-    descricao: '',
+    // descricao: '',
     preco: 0,
     categoria: '',
     cover_attachment_key: ''
@@ -61,15 +61,15 @@ const showForm = ref(false)
           <div>
             <input type="file" @change="onFileChange">
             <div>
-              <img v-if="coverUrl" src="coverUrl">
+              <img v-if="coverUrl" :src="coverUrl">
             </div>
           </div>
           <div>
             <input type="text" id="nome" v-model="produtoAtual.nome" placeholder="Nome">
           </div>
-          <div>
+          <!-- <div>
             <input type="text" id="descricao" v-model="produtoAtual.descricao" placeholder="Descrição">
-          </div>
+          </div> -->
           <div>
             <input type="text" id="preco" v-model="produtoAtual.preco" placeholder="Preço">
           </div>

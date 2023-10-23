@@ -14,7 +14,7 @@ onMounted(async () => {
 <template>
   <div class="container">
     <div v-for="produto in produtos" :key="produto.id" class="card">
-      <img :src="produto.imagem.file" :alt="produto.nome" />
+      <img :src="produto.cover.url" :alt="produto.nome" />
       <div>
         <h3>{{ produto.nome }}</h3>
         <div>

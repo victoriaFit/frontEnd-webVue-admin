@@ -9,7 +9,7 @@ const file = ref(null)
 const equipmentAtual = reactive({
   name: '',
   description: '',
-  image: null,
+  cover_attachment_key: null, // Alterado de 'image' para 'cover_attachment_key'
 })
 
 function onFileChange(e) {
@@ -19,15 +19,15 @@ function onFileChange(e) {
 
 async function salvar() {
   if (file.value) {
-    const image = await ImageService.uploadImage(file.value);
-    equipmentAtual.image = image.attachment_key; 
+    const imageResponse = await ImageService.uploadImage(file.value);
+    equipmentAtual.cover_attachment_key = imageResponse.attachment_key; // Ajuste aqui
   }
   await EquipmentApi.adicionarEquipment(equipmentAtual);
   Object.assign(equipmentAtual, {
     id: '',
     name: '',
     description: '',
-    image: null
+    cover_attachment_key: null // Alterado de 'image' para 'cover_attachment_key'
   });
   coverUrl.value = '';
   file.value = null;
@@ -35,11 +35,9 @@ async function salvar() {
   equipments.value = await EquipmentApi.buscarTodosOsEquipments();
 }
 
-
 onMounted(async () => {
   equipments.value = await EquipmentApi.buscarTodosOsEquipments()
 })
-
 </script>
 
 <template>
@@ -51,10 +49,11 @@ onMounted(async () => {
     <textarea v-model="equipmentAtual.description" placeholder="Descrição do equipamento"></textarea>
     <button @click="salvar">Salvar Equipamento</button>
     <div v-for="equipment in equipments" :key="equipment.id">
-      <img :src="equipment.image?.url" :alt="equipment.name" />
+      <!-- Alterado de 'equipment.image?.url' para 'equipment.cover?.url' -->
+      <img :src="equipment.cover?.url" :alt="equipment.name" />
       <h3>{{ equipment.name }}</h3>
       <p>{{ equipment.description }}</p>
-      <button @click="EquipmentApi.excluirEquipment(equipment.id)">Excluir</button>
+      <button @click="() => EquipmentApi.excluirEquipment(equipment.id)">Excluir</button>
     </div>
   </div>
 </template>

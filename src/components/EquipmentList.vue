@@ -12,7 +12,7 @@ onMounted(async () => {
 <template>
   <div class="container">
     <div v-for="equipment in equipments" :key="equipment.id" class="card">
-      <img :src="equipment.image.url" :alt="equipment.name" />
+      <img :src="equipment.cover?.url" :alt="equipment.name" />
       <div>
         <h3>{{ equipment.name }}</h3>
         <p>{{ equipment.description }}</p>

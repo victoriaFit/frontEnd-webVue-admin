@@ -1,4 +1,3 @@
-// src/api/imageService.js
 import api from '../plugins/api'
 
 class ImageService {

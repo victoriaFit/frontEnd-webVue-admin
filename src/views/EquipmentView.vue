@@ -7,6 +7,7 @@ const equipments = ref([])
 const coverUrl = ref('')
 const file = ref(null)
 const equipmentAtual = reactive({
+  id: '',
   name: '',
   description: '',
   cover_attachment_key: null,
@@ -17,12 +18,28 @@ function onFileChange(e) {
   coverUrl.value = URL.createObjectURL(file.value)
 }
 
+async function carregarEquipmentParaEditar(equipmentId) {
+  const equipment = equipments.value.find(e => e.id === equipmentId);
+  if (equipment) {
+    equipmentAtual.id = equipment.id;
+    equipmentAtual.name = equipment.name;
+    equipmentAtual.description = equipment.description;
+    equipmentAtual.cover_attachment_key = equipment.cover_attachment_key;
+    coverUrl.value = equipment.cover?.url;
+  }
+}
+
 async function salvar() {
   if (file.value) {
     const imageResponse = await ImageService.uploadImage(file.value);
     equipmentAtual.cover_attachment_key = imageResponse.attachment_key;
   }
   await EquipmentApi.adicionarEquipment(equipmentAtual);
+  resetForm();
+  equipments.value = await EquipmentApi.buscarTodosOsEquipments();
+}
+
+function resetForm() {
   Object.assign(equipmentAtual, {
     id: '',
     name: '',
@@ -31,12 +48,13 @@ async function salvar() {
   });
   coverUrl.value = '';
   file.value = null;
-  equipments.value = await EquipmentApi.buscarTodosOsEquipments();
 }
 
 onMounted(async () => {
   equipments.value = await EquipmentApi.buscarTodosOsEquipments()
 })
+
+
 </script>
 
 <template>
@@ -54,11 +72,13 @@ onMounted(async () => {
         <img class="equipment-image" :src="equipment.cover?.url" :alt="equipment.name" />
         <h3>{{ equipment.name }}</h3>
         <p>{{ equipment.description }}</p>
+        <button @click="carregarEquipmentParaEditar(equipment.id)">Editar</button>
         <button @click="() => EquipmentApi.excluirEquipment(equipment.id)">Excluir</button>
       </div>
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .page-equipamentos {

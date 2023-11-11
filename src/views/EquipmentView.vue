@@ -11,11 +11,12 @@ const equipmentAtual = reactive({
   name: '',
   description: '',
   cover_attachment_key: null,
+  is_on_promotion: false,
 })
 
 function onFileChange(e) {
   file.value = e.target.files[0]
-  coverUrl.value = URL.createObjectURL(file.value)
+  coverUrl.value = file.value ? URL.createObjectURL(file.value) : '';
 }
 
 async function carregarEquipmentParaEditar(equipmentId) {
@@ -24,8 +25,9 @@ async function carregarEquipmentParaEditar(equipmentId) {
     equipmentAtual.id = equipment.id;
     equipmentAtual.name = equipment.name;
     equipmentAtual.description = equipment.description;
-    equipmentAtual.cover_attachment_key = equipment.cover_attachment_key;
-    coverUrl.value = equipment.cover?.url;
+    equipmentAtual.cover_attachment_key = equipment.cover?.attachment_key;
+    equipmentAtual.is_on_promotion = equipment.is_on_promotion;
+    coverUrl.value = equipment.cover?.url || '';
   }
 }
 
@@ -33,7 +35,12 @@ async function salvar() {
   if (file.value) {
     const imageResponse = await ImageService.uploadImage(file.value);
     equipmentAtual.cover_attachment_key = imageResponse.attachment_key;
+  } else if (!equipmentAtual.id) {
+    // Se for um novo equipamento sem imagem, remova a chave de anexo da capa
+    delete equipmentAtual.cover_attachment_key;
   }
+  // Se for uma atualização e não houver arquivo novo, mantenha a imagem existente
+
   await EquipmentApi.adicionarEquipment(equipmentAtual);
   resetForm();
   equipments.value = await EquipmentApi.buscarTodosOsEquipments();
@@ -44,7 +51,8 @@ function resetForm() {
     id: '',
     name: '',
     description: '',
-    cover_attachment_key: null
+    cover_attachment_key: null,
+    is_on_promotion: false
   });
   coverUrl.value = '';
   file.value = null;
@@ -53,25 +61,29 @@ function resetForm() {
 onMounted(async () => {
   equipments.value = await EquipmentApi.buscarTodosOsEquipments()
 })
-
-
 </script>
+
+>
 
 <template>
   <div class="page-equipamentos">
-    <h1>Equipamentos</h1>
+    <h1>Produtos</h1>
     <div class="equipment-form">
+      <input type="text" v-model="equipmentAtual.name" placeholder="Nome do produto">
+      <textarea v-model="equipmentAtual.description" placeholder="Descrição do produto"></textarea>
       <input type="file" @change="onFileChange">
       <img v-if="coverUrl" :src="coverUrl" alt="Preview" class="equipment-image">
-      <input type="text" v-model="equipmentAtual.name" placeholder="Nome do equipamento">
-      <textarea v-model="equipmentAtual.description" placeholder="Descrição do equipamento"></textarea>
-      <button @click="salvar">Salvar Equipamento</button>
+      <label>
+        <input type="checkbox" v-model="equipmentAtual.is_on_promotion"> Em Promoção
+      </label>
+      <button @click="salvar">Salvar Produto</button>
     </div>
     <div class="equipment-list">
       <div v-for="equipment in equipments" :key="equipment.id" class="equipment-card">
         <img class="equipment-image" :src="equipment.cover?.url" :alt="equipment.name" />
         <h3>{{ equipment.name }}</h3>
         <p>{{ equipment.description }}</p>
+        <p v-if="equipment.is_on_promotion" class="promotion-label">Em Promoção!</p>
         <button @click="carregarEquipmentParaEditar(equipment.id)">Editar</button>
         <button @click="() => EquipmentApi.excluirEquipment(equipment.id)">Excluir</button>
       </div>
@@ -80,8 +92,11 @@ onMounted(async () => {
 </template>
 
 
+
+
 <style scoped>
 .page-equipamentos {
+  font-family: 'Poppins', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -89,6 +104,8 @@ onMounted(async () => {
 }
 
 .equipment-form {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 600px;
   margin-bottom: 20px;
@@ -109,7 +126,7 @@ onMounted(async () => {
 
 .equipment-form button {
   padding: 10px 20px;
-  background-color: #5cb85c;
+  background-color: #f39c12; /* Cor laranja para os botões */
   color: white;
   border: none;
   border-radius: 4px;
@@ -117,12 +134,12 @@ onMounted(async () => {
 }
 
 .equipment-form button:hover {
-  background-color: #4cae4c;
+  background-color: #e67e22; /* Cor laranja mais escura no hover */
 }
 
 .equipment-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr); /* 4 itens por linha */
   gap: 20px;
   width: 100%;
   max-width: 1200px;
@@ -135,18 +152,21 @@ onMounted(async () => {
   padding: 20px;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .equipment-card img.equipment-image {
-  width: 200px;
-  height: 200px;
-  object-fit: cover;
+  width: 100%; /* A imagem ocupa toda a largura do card */
+  height: auto; /* Mantém as proporções da imagem */
+  object-fit: contain; /* Garante que a imagem inteira seja mostrada */
   border-radius: 4px;
   margin-bottom: 15px;
 }
 
-.equipment-card h3 {
+.equipment-card h3,
+.equipment-card p {
   margin: 0;
   color: #333;
 }
@@ -155,15 +175,43 @@ onMounted(async () => {
   font-size: 0.9em;
 }
 
-@media (max-width: 768px) {
+/* Estilos para o botão de adicionar equipamento */
+.add-equipment-button {
+  padding: 10px 20px;
+  background-color: #f39c12; /* Cor laranja para o botão de adicionar */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.add-equipment-button:hover {
+  background-color: #e67e22; /* Cor laranja mais escura no hover */
+}
+
+/* Media queries para responsividade */
+@media (max-width: 1200px) {
   .equipment-list {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(3, 1fr); /* 3 itens por linha em telas menores */
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 900px) {
   .equipment-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr); /* 2 itens por linha em telas ainda menores */
   }
 }
+
+@media (max-width: 600px) {
+  .equipment-list {
+    grid-template-columns: 1fr; /* 1 item por linha em telas pequenas */
+  }
+}
+
+.promotion-label {
+  color: green;
+  font-weight: bold;
+}
 </style>
+

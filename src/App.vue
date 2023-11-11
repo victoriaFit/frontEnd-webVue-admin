@@ -27,12 +27,11 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  /* Adicione mais estilos conforme necessário */
 }
 
 .logout-button {
-  background-color: #f44336; /* Cor de fundo */
-  color: white; /* Cor do texto */
+  background-color: #f44336; 
+  color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 5px;

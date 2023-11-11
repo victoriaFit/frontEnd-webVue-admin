@@ -94,7 +94,7 @@ export default {
   width: 100%;
   text-align: center;
   margin-top: 10px;
-  border: none; /* Remove as bordas */
+  border: none;
 
 }
 

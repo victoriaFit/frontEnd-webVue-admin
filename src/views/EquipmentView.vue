@@ -36,10 +36,8 @@ async function salvar() {
     const imageResponse = await ImageService.uploadImage(file.value);
     equipmentAtual.cover_attachment_key = imageResponse.attachment_key;
   } else if (!equipmentAtual.id) {
-    // Se for um novo equipamento sem imagem, remova a chave de anexo da capa
     delete equipmentAtual.cover_attachment_key;
   }
-  // Se for uma atualização e não houver arquivo novo, mantenha a imagem existente
 
   await EquipmentApi.adicionarEquipment(equipmentAtual);
   resetForm();
@@ -62,6 +60,7 @@ onMounted(async () => {
   equipments.value = await EquipmentApi.buscarTodosOsEquipments()
 })
 </script>
+
 
 >
 
@@ -126,7 +125,7 @@ onMounted(async () => {
 
 .equipment-form button {
   padding: 10px 20px;
-  background-color: #f39c12; /* Cor laranja para os botões */
+  background-color: #f39c12;
   color: white;
   border: none;
   border-radius: 4px;
@@ -134,12 +133,12 @@ onMounted(async () => {
 }
 
 .equipment-form button:hover {
-  background-color: #e67e22; /* Cor laranja mais escura no hover */
+  background-color: #e67e22;
 }
 
 .equipment-list {
   display: grid;
-  grid-template-columns: repeat(4, 1fr); /* 4 itens por linha */
+  grid-template-columns: repeat(4, 1fr); 
   gap: 20px;
   width: 100%;
   max-width: 1200px;
@@ -158,9 +157,9 @@ onMounted(async () => {
 }
 
 .equipment-card img.equipment-image {
-  width: 100%; /* A imagem ocupa toda a largura do card */
-  height: auto; /* Mantém as proporções da imagem */
-  object-fit: contain; /* Garante que a imagem inteira seja mostrada */
+  width: 100%; 
+  height: auto; 
+  object-fit: contain; 
   border-radius: 4px;
   margin-bottom: 15px;
 }
@@ -175,10 +174,10 @@ onMounted(async () => {
   font-size: 0.9em;
 }
 
-/* Estilos para o botão de adicionar equipamento */
+
 .add-equipment-button {
   padding: 10px 20px;
-  background-color: #f39c12; /* Cor laranja para o botão de adicionar */
+  background-color: #f39c12; 
   color: white;
   border: none;
   border-radius: 4px;
@@ -187,25 +186,24 @@ onMounted(async () => {
 }
 
 .add-equipment-button:hover {
-  background-color: #e67e22; /* Cor laranja mais escura no hover */
+  background-color: #e67e22;
 }
 
-/* Media queries para responsividade */
 @media (max-width: 1200px) {
   .equipment-list {
-    grid-template-columns: repeat(3, 1fr); /* 3 itens por linha em telas menores */
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
 @media (max-width: 900px) {
   .equipment-list {
-    grid-template-columns: repeat(2, 1fr); /* 2 itens por linha em telas ainda menores */
+    grid-template-columns: repeat(2, 1fr); 
   }
 }
 
 @media (max-width: 600px) {
   .equipment-list {
-    grid-template-columns: 1fr; /* 1 item por linha em telas pequenas */
+    grid-template-columns: 1fr; 
   }
 }
 

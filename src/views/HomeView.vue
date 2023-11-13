@@ -8,8 +8,9 @@
       <label for="file-input" class="file-input-label">Selecionar imagem</label>
       <img v-if="coverUrl" :src="coverUrl" alt="Preview" class="equipment-image">
       <div class="promotion-section">
+        <p class="promotion-title">Está em promoção?</p>
         <input type="checkbox" v-model="equipmentAtual.is_on_promotion" id="promo-toggle" class="promo-toggle">
-        <label for="promo-toggle" class="toggle-label" id="text-toggle">Promoção</label>
+        <label for="promo-toggle" class="toggle-label" id="text-toggle"></label>
       </div>
       <button @click="salvar" class="save-button">Salvar Produto</button>
     </div>
@@ -169,14 +170,20 @@ margin-left: 10px;
   display: none;
 }
 
+.promotion-title {
+  margin-left: 10px;
+}
+
 .toggle-label {
   display: inline-block;
-  width: 50px;
-  height: 25px;
+  width: 54px ;
+  height: 30px;
   background-color: #ccc;
-  border-radius: 25px;
+  border-radius: 30px;
   position: relative;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-left: 10px;
 }
 
 .promo-toggle:checked + .toggle-label {
@@ -186,14 +193,15 @@ margin-left: 10px;
 .toggle-label::after {
   content: '';
   display: block;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   background-color: white;
   border-radius: 50%;
   position: absolute;
-  top: 2.5px;
-  left: 5px;
+  top: 3px;
+  left: 3px;
   transition: 0.2s;
+
 }
 
 .promo-toggle:checked + .toggle-label::after {
@@ -262,6 +270,13 @@ margin-left: 10px;
 .promotion-flag {
   color: green;
   font-weight: bold;
+  margin-top: 10px;
+}
+
+.promotion-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; 
   margin-top: 10px;
 }
 
